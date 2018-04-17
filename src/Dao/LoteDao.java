@@ -5,7 +5,7 @@
  */
 package Dao;
 
-import Modelo.Avicola;
+import Modelo.Lote;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,23 +14,20 @@ import java.sql.SQLException;
 
 /**
  *
- * @author Nombre
+ * @author Ubicacion
  */
-public class AvicolaDao {
+public class LoteDao {
 
-    public void registrar(Connection conn, Avicola avicola) throws SQLException {
+    public void registrar(Connection conn, Lote lote) throws SQLException {
         String sql = "";
         PreparedStatement stmt = null;
         try {
-            sql = "INSERT INTO AVICOLA ( NIT, NOMBRE, DIRECCION, TELEFONO_CONTACTO, "
-                    + "CONSECUTIVO) VALUES (?, ?, ?, ?, ?) ";
+            sql = "INSERT INTO LOTE ( ID, UBICACION, AREA) VALUES (?, ?, ?) ";
             stmt = conn.prepareStatement(sql);
 
-            stmt.setInt(1, avicola.getNit());
-            stmt.setString(2, avicola.getNombre());
-            stmt.setString(3, avicola.getDireccion());
-            stmt.setInt(4, avicola.getTelefonoContacto());
-            stmt.setInt(5, avicola.getConsecutivo());
+            stmt.setInt(1, lote.getId());
+            stmt.setString(2, lote.getUbicacion());
+            stmt.setDouble(2, lote.getArea());
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount != 1) {
                 throw new SQLException("Error de PrimaryKey Error al acutalizar DB!");
@@ -42,48 +39,41 @@ public class AvicolaDao {
         }
     }
 
-    public Avicola consultar(Connection conn, Avicola objConsulta) throws SQLException {
-        Avicola avicola = new Avicola();
+    public Lote consultar(Connection conn, Lote objConsulta) throws SQLException {
+        Lote lote = new Lote();
         ResultSet result = null;
-        String sql = "SELECT NIT, "
-                + "NOMBRE, "
-                + "DIRECCION, "
-                + "TELEFONO_CONTACTO, "
-                + "CONSECUTIVO "
-                + "FROM AVICOLA "
-                + "WHERE NIT = ? ";
+        String sql = "SELECT ID, "
+                + "UBICACION, "
+                + "AREA "
+                + "FROM LOTE "
+                + "WHERE ID = ? ";
         PreparedStatement stmt = null;
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, objConsulta.getNit());
+            stmt.setInt(1, objConsulta.getId());
             result = stmt.executeQuery();
             if (result.next()) {
-                avicola.setNit(result.getInt("NIT"));
-                avicola.setNombre(result.getString("NOMBRE"));
-                avicola.setDireccion(result.getString("DIRECCION"));
-                avicola.setTelefonoContacto(result.getInt("TELEFONO_CONTACTO"));
-                avicola.setConsecutivo(result.getInt("CONSECUTIVO"));
+                lote.setId(result.getInt("ID"));
+                lote.setUbicacion(result.getString("UBICACION"));
+                lote.setArea(result.getDouble("AREA"));
             }
         } finally {
             if (stmt != null) {
                 stmt.close();
             }
         }
-        return avicola;
+        return lote;
     }
 
-    public void modificar(Connection conn, Avicola avicola) throws SQLException {
-        String sql = "UPDATE AVICOLA SET NOMBRE = ?, DIRECCION = ?, TELEFONO_CONTACTO = ?, "
-                + "CONSECUTIVO = ? WHERE (NIT = ? ) ";
+    public void modificar(Connection conn, Lote lote) throws SQLException {
+        String sql = "UPDATE LOTE SET UBICACION = ?, AREA = ? WHERE (ID = ? ) ";
         PreparedStatement stmt = null;
 
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, avicola.getNombre());
-            stmt.setString(2, avicola.getDireccion());
-            stmt.setInt(3, avicola.getTelefonoContacto());
-            stmt.setInt(4, avicola.getConsecutivo());
-            stmt.setInt(5, avicola.getNit());
+            stmt.setString(1, lote.getUbicacion());
+            stmt.setDouble(2, lote.getArea());
+            stmt.setInt(3, lote.getId());
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 throw new SQLException("El objeto no puede ser actualizado ! (PrimaryKey no encontrada!)");
@@ -98,14 +88,14 @@ public class AvicolaDao {
         }
     }
 
-    public void eliminar(Connection conn, Avicola avicola) throws SQLException {
+    public void eliminar(Connection conn, Lote lote) throws SQLException {
         String sql = "";
         PreparedStatement stmt = null;
 
         try {
-            sql = "DELETE FROM AVICOLA WHERE (NIT = ?) ";
+            sql = "DELETE FROM LOTE WHERE (ID = ?) ";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, avicola.getNit());
+            stmt.setInt(1, lote.getId());
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 throw new SQLException("El objeto no puede borrar! (PrimaryKey no encontrada!)");

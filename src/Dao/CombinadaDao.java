@@ -50,11 +50,12 @@ public class CombinadaDao {
                 + "REFERENCIA, "
                 + "NOMBRE_OPERARIO, "
                 + "COSTO "
-                + "WHERE CONSECUTIVO = ? ";
+                + "FROM COMBINADA "
+                + "WHERE ORDEN_ALQUILER = ? ";
         PreparedStatement stmt = null;
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, objConsulta.getConsecutivo());
+            stmt.setInt(1, objConsulta.getOrdenAlquiler());
             result = stmt.executeQuery();
             if (result.next()) {
                 combinada.setConsecutivo(result.getInt("CONSECUTIVO"));
@@ -72,17 +73,17 @@ public class CombinadaDao {
     }
 
     public void modificar(Connection conn, Combinada combinada) throws SQLException {
-        String sql = "UPDATE COMBINADA SET ORDEN_ALQUILER = ?, REFERENCIA = ?, NOMBRE_OPERARIO = ?, "
-                + "COSTO = ? WHERE (CONSECUTIVO = ? ) ";
+        String sql = "UPDATE COMBINADA SET CONSECUTIVO = ?, REFERENCIA = ?, NOMBRE_OPERARIO = ?, "
+                + "COSTO = ? WHERE (ORDEN_ALQUILER = ? ) ";
         PreparedStatement stmt = null;
 
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, combinada.getOrdenAlquiler());
+            stmt.setInt(1, combinada.getConsecutivo());
             stmt.setString(2, combinada.getReferencia());
             stmt.setString(3, combinada.getNombreOperario());
             stmt.setDouble(4, combinada.getCosto());
-            stmt.setInt(5, combinada.getConsecutivo());
+            stmt.setInt(5, combinada.getOrdenAlquiler());
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 throw new SQLException("El objeto no puede ser actualizado ! (PrimaryKey no encontrada!)");
@@ -102,9 +103,9 @@ public class CombinadaDao {
         PreparedStatement stmt = null;
 
         try {
-            sql = "DELETE FROM COMBINADA WHERE (CONSECUTIVO = ?) ";
+            sql = "DELETE FROM COMBINADA WHERE (ORDEN_ALQUILER = ?) ";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, combinada.getConsecutivo());
+            stmt.setInt(1, combinada.getOrdenAlquiler());
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 throw new SQLException("El objeto no puede borrar! (PrimaryKey no encontrada!)");

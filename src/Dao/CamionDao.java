@@ -22,7 +22,7 @@ public class CamionDao {
         String sql = "";
         PreparedStatement stmt = null;
         try {
-            sql = "INSERT INTO CAMION ( CONSECUTIVO, PLACA, NOMBRE_Y_APELLIDOS_CONDUCTOR, EMPRESA_AFILIADA, "
+            sql = "INSERT INTO CAMION ( CONSECUTIVO, PLACA, NOMBRES_Y_APELLIDOS_CONDUCTOR, EMPRESA_AFILIADA, "
                     + "CAPACIDAD) VALUES (?, ?, ?, ?, ?) ";
             stmt = conn.prepareStatement(sql);
 
@@ -47,19 +47,21 @@ public class CamionDao {
         ResultSet result = null;
         String sql = "SELECT CONSECUTIVO, "
                 + "PLACA, "
-                + "NOMBRE_Y_APELLIDOS_CONDUCTOR, "
+                + "NOMBRES_Y_APELLIDOS_CONDUCTOR, "
                 + "EMPRESA_AFILIADA, "
                 + "CAPACIDAD "
-                + "WHERE CONSECUTIVO = ? ";
+                + "FROM CAMION "
+                + "WHERE PLACA = ? ";
         PreparedStatement stmt = null;
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, objConsulta.getConsecutivo());
+            stmt.setString(1, objConsulta.getPlaca());
+            System.out.println("QUERY " + stmt.toString());
             result = stmt.executeQuery();
             if (result.next()) {
                 camion.setConsecutivo(result.getInt("CONSECUTIVO"));
                 camion.setPlaca(result.getString("PLACA"));
-                camion.setNombresApellidosConductor(result.getString("NOMBRE_Y_APELLIDOS_CONDUCTOR"));
+                camion.setNombresApellidosConductor(result.getString("NOMBRES_Y_APELLIDOS_CONDUCTOR"));
                 camion.setEmpresaAfiliada(result.getString("EMPRESA_AFILIADA"));
                 camion.setCapacidad(result.getDouble("CAPACIDAD"));
             }
@@ -72,17 +74,17 @@ public class CamionDao {
     }
 
     public void modificar(Connection conn, Camion camion) throws SQLException {
-        String sql = "UPDATE CAMION SET PLACA = ?, NOMBRE_Y_APELLIDOS_CONDUCTOR = ?, EMPRESA_AFILIADA = ?, "
-                + "CAPACIDAD = ? WHERE (CONSECUTIVO = ? ) ";
+        String sql = "UPDATE CAMION SET CONSECUTIVO = ?, NOMBRES_Y_APELLIDOS_CONDUCTOR = ?, EMPRESA_AFILIADA = ?, "
+                + "CAPACIDAD = ? WHERE (PLACA = ? ) ";
         PreparedStatement stmt = null;
 
         try {
             stmt = conn.prepareStatement(sql);
-            stmt.setString(1, camion.getPlaca());
+            stmt.setInt(1, camion.getConsecutivo());
             stmt.setString(2, camion.getNombresApellidosConductor());
             stmt.setString(3, camion.getEmpresaAfiliada());
             stmt.setDouble(4, camion.getCapacidad());
-            stmt.setInt(5, camion.getConsecutivo());
+            stmt.setString(5, camion.getPlaca());
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 throw new SQLException("El objeto no puede ser actualizado ! (PrimaryKey no encontrada!)");
@@ -102,9 +104,9 @@ public class CamionDao {
         PreparedStatement stmt = null;
 
         try {
-            sql = "DELETE FROM CAMION WHERE (CONSECUTIVO = ?) ";
+            sql = "DELETE FROM CAMION WHERE (PLACA = ?) ";
             stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, camion.getConsecutivo());
+            stmt.setString(1, camion.getPlaca());
             int rowcount = databaseUpdate(conn, stmt);
             if (rowcount == 0) {
                 throw new SQLException("El objeto no puede borrar! (PrimaryKey no encontrada!)");

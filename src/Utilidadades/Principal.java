@@ -5,8 +5,6 @@
  */
 package Utilidadades;
 
-import java.util.Properties;
-
 /**
  *
  * @author Usuario
@@ -14,8 +12,9 @@ import java.util.Properties;
 public class Principal {
 
     public static void main(String arg[]) {
-        Properties prop = new UtilFile().getPropiedades();
-        System.out.println(prop.getProperty("url"));
+        /*Siembra col = new Siembra();
+        col.setConsecutivoSiembra(0);
+        col = SiembraCtrl.consultar(col); 
+        System.out.println("El resp es " + col.getGranoSiembra());*/
     }
-
 }

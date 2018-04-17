@@ -52,8 +52,8 @@ public class ControlSiembraDao {
         ControlSiembra controlSiembra = new ControlSiembra();
         ResultSet result = null;
         String sql = "SELECT CONSECUTIVO_CONTROL_SIEMBRA, "
-                + "TO_CHAR(FECHA_INICIO,'DD/MM/YYYY') FECHA_INICIO, "
-                + "TO_CHAR(FECHA_FINALIZACION,'DD/MM/YYYY') FECHA_FINALIZACION, "
+                + "DATE_FORMAT(FECHA_INICIO,'%d/%m/%Y') FECHA_INICIO, "
+                + "DATE_FORMAT(FECHA_FINALIZACION,'%d/%m/%Y') FECHA_FINALIZACION, "
                 + "TIPO_CONTROL, "
                 + "TIPO_INSUMO, "
                 + "CANTIDAD_INSUMO, "
@@ -61,11 +61,13 @@ public class ControlSiembraDao {
                 + "DESCRIPCION, "
                 + "CONSECHA_APLICAR, "
                 + "CONSECUTIVO "
+                + "FROM CONTROL_SIEMBRA "
                 + "WHERE CONSECUTIVO_CONTROL_SIEMBRA = ? ";
         PreparedStatement stmt = null;
         try {
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, objConsulta.getConsecutivoControlSiembra());
+            System.out.println("SQL " + stmt.toString());
             result = stmt.executeQuery();
             if (result.next()) {
                 controlSiembra.setConsecutivoControlSiembra(result.getInt("CONSECUTIVO_CONTROL_SIEMBRA"));

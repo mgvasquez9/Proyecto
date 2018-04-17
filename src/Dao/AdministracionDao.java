@@ -44,17 +44,21 @@ public class AdministracionDao {
     public Administracion consultar(Connection conn, Administracion objConsulta) throws SQLException {
         Administracion administracion = new Administracion();
         ResultSet result = null;
-        String sql = "SELECT ID_USER, "
-                + "USUARIO, "
-                + "PASSWORD, "
-                + "ESTADO "
-                + "WHERE ID_USER = ? ";
+        String sql = "SELECT AD.ID_USER, "
+                + "AD.USUARIO, "
+                + "AD.PASSWORD, "
+                + "AD.ESTADO "
+                + "FROM ADMINISTRACION AD "
+                + "WHERE AD.ID_USER = ? ";
+
         PreparedStatement stmt = null;
         try {
             stmt = conn.prepareStatement(sql);
+
             stmt.setInt(1, objConsulta.getIdUser());
             result = stmt.executeQuery();
             if (result.next()) {
+
                 administracion.setIdUser(result.getInt("ID_USER"));
                 administracion.setUsuario(result.getString("USUARIO"));
                 administracion.setPassword(result.getString("PASSWORD"));
@@ -65,6 +69,7 @@ public class AdministracionDao {
                 stmt.close();
             }
         }
+        
         return administracion;
     }
 

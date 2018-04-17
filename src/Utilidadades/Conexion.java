@@ -1,13 +1,11 @@
 package Utilidadades;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 
@@ -35,10 +33,10 @@ public enum Conexion {
             try {
                 conn = (Connection) DriverManager.getConnection(prop.getProperty("url")
                         + prop.getProperty("esquema"),
-                        prop.getProperty("nombre_usuaruo"),
+                        prop.getProperty("usuario"),
                         prop.getProperty("contrasena"));
             } catch (Exception e) {
-                System.out.println("Error en Conexion() e:"+e.getMessage());
+                System.out.println("Error en Conexion() e:" + e.getMessage());
             }
         }
     }

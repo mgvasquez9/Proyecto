@@ -27,7 +27,7 @@ public class UtilFile {
     public Properties getPropiedades() {
         try {
             propiedades.load(new FileInputStream(
-                    "C:\\Users\\Usuario.Usuario-PC\\Documents\\NetBeansProjects\\Sipagcv3\\archivo.properties"));
+                    "C:\\Users\\Usuario.Usuario-PC\\Documents\\Devs\\Proyecto\\archivo.properties"));
         } catch (FileNotFoundException ex) {
             Logger.getLogger(UtilFile.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

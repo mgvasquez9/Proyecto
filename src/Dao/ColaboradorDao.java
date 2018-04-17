@@ -54,6 +54,7 @@ public class ColaboradorDao {
                 + "SALARIO, "
                 + "DIRECCION, "
                 + "TELEFONO "
+                + "FROM COLABORADOR "
                 + "WHERE IDENTIFICACION_COLABORADOR = ? ";
         PreparedStatement stmt = null;
         try {

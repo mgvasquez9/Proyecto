@@ -11,17 +11,17 @@ import java.io.Serializable;
  *
  * @author Usuario
  */
-public class Remsion implements Serializable {
+public class Remision implements Serializable {
     
     private int consecutivo;
-    private int consecutivoRevision;
+    private int consecutivoRemision;
     private String fechaRemision;
     private String avicolaDestino;
     private String gradoDespachado;
     private String tipoDespacho;
     private String placaVehiculoTransportador;
 
-    public Remsion() {
+    public Remision() {
         super();
     }
 
@@ -33,12 +33,12 @@ public class Remsion implements Serializable {
         this.consecutivo = consecutivo;
     }
 
-    public int getConsecutivoRevision() {
-        return consecutivoRevision;
+    public int getConsecutivoRemision() {
+        return consecutivoRemision;
     }
 
-    public void setConsecutivoRevision(int consecutivoRevision) {
-        this.consecutivoRevision = consecutivoRevision;
+    public void setConsecutivoRemision(int consecutivoRemision) {
+        this.consecutivoRemision = consecutivoRemision;
     }
 
     public String getFechaRemision() {
