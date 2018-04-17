@@ -73,6 +73,38 @@ public class AdministracionDao {
         return administracion;
     }
 
+    public Administracion consultarPorUsuario(Connection conn, Administracion objConsulta) throws SQLException {
+        Administracion administracion = new Administracion();
+        ResultSet result = null;
+        String sql = "SELECT AD.ID_USER, "
+                + "AD.USUARIO, "
+                + "AD.PASSWORD, "
+                + "AD.ESTADO "
+                + "FROM ADMINISTRACION AD "
+                + "WHERE AD.USUARIO = ? ";
+
+        PreparedStatement stmt = null;
+        try {
+            stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, objConsulta.getUsuario());
+            result = stmt.executeQuery();
+            if (result.next()) {
+
+                administracion.setIdUser(result.getInt("ID_USER"));
+                administracion.setUsuario(result.getString("USUARIO"));
+                administracion.setPassword(result.getString("PASSWORD"));
+                administracion.setEstado(result.getString("ESTADO"));
+            }
+        } finally {
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
+        
+        return administracion;
+    }
+
     public void modificar(Connection conn, Administracion administracion) throws SQLException {
         String sql = "UPDATE ADMINISTRACION SET USUARIO = ?, PASSWORD = ?, ESTADO = ? "
                 + "WHERE (ID_USER = ? ) ";

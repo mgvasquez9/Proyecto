@@ -59,4 +59,20 @@ public class AdministracionCtrl {
             conn.cerrarConecion();
         }
     }
+
+    public static boolean loguear(Administracion administracion) {
+        Conexion conn = Conexion.getInstance();
+        try {
+            Connection conexion = conn.conectar();
+            Administracion logueo = adminDao.consultarPorUsuario(conexion, administracion);
+            if (administracion.getPassword().equals(logueo.getPassword())) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception exce) {
+            conn.cerrarConecion();
+            return false;
+        }
+    }
 }
